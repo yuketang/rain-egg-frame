@@ -1,0 +1,77 @@
+{
+  "name": "rain-egg-frame",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "debug": "^3.1.0",
+    "egg": "^2.9.0",
+    "egg-tracer": "^1.1.0",
+    "ini": "^1.3.5",
+    "object-assign": "^4.1.1",
+    "uuid": "^3.2.1",
+    "cookie": "^0.3.1",
+    "cookie-signature": "^1.1.0",
+    "egg-mysql": "^3.0.0",
+    "egg-redis": "^2.0.0",
+    "egg-scripts": "^2.6.0",
+    "egg-sequelize": "^3.1.4",
+    "egg-validate": "^1.0.0",
+    "formstream": "^1.1.0",
+    "ioredis": "^3.2.2",
+    "mysql2": "^1.5.3",
+    "sequelize": "^4.37.10",
+    "stream-wormhole": "^1.0.3"
+  },
+  "devDependencies": {
+    "autod": "^3.0.1",
+    "autod-egg": "^1.0.0",
+    "egg-bin": "^4.4.0",
+    "egg-ci": "^1.8.0",
+    "egg-mock": "^3.14.0",
+    "eslint": "^4.18.0",
+    "eslint-config-egg": "^7.0.0",
+    "webstorm-disable-index": "^1.2.0"
+  },
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "scripts": {
+    "test": "npm run lint -- --fix && egg-bin pkgfiles && npm run test-local",
+    "test-local": "egg-bin test",
+    "cov": "egg-bin cov",
+    "lint": "eslint .",
+    "ci": "npm run lint && npm run cov",
+    "autod": "autod",
+    "pkgfiles": "egg-bin pkgfiles",
+    "debug": "egg-bin debug",
+    "dev": "egg-bin dev",
+    "migrate:down": "egg-sequelize db:migrate:undo",
+    "migrate:new": "egg-sequelize migration:create",
+    "migrate:up": "egg-sequelize db:migrate",
+    "start": "egg-scripts start --daemon --title=egg-server-rain-web-egg",
+    "stop": "egg-scripts stop --title=egg-server-rain-web-egg"
+  },
+  "ci": {
+    "version": "8, 9"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [
+    "egg",
+    "egg-framework"
+  ],
+  "author": "",
+  "files": [
+    "app",
+    "config",
+    "lib",
+    "index.js"
+  ],
+  "eslintIgnore": [
+    "coverage",
+    "dist"
+  ],
+  "license": "MIT"
+}
