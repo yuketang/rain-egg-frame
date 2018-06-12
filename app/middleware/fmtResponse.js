@@ -8,10 +8,10 @@ module.exports = () => {
 
     await next();
 
-    // if (ctx.status === 400 && !ctx.body) ctx.body = 400000;
-    // if (ctx.status === 401 && !ctx.body) ctx.body = 401000;
-    // if (ctx.status === 404 && !ctx.body) ctx.body = 404000;
-    // if (ctx.status === 500 && !ctx.body) ctx.body = 500000;
+    if (ctx.status === 400 && !ctx.body) ctx.body = 400000;
+    if (ctx.status === 401 && !ctx.body) ctx.body = 401000;
+    if (ctx.status === 404 && !ctx.body) ctx.body = 404000;
+    if (ctx.status === 500 && !ctx.body) ctx.body = 500000;
 
 
     if (typeof ctx.body === 'number') {
