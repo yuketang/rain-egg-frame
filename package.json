@@ -67,7 +67,8 @@
     "app",
     "config",
     "lib",
-    "index.js"
+    "index.js",
+    "app.js"
   ],
   "eslintIgnore": [
     "coverage",
