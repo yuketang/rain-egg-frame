@@ -58,6 +58,7 @@ class Session {
       }
 
       try {
+
         let {session_key, session_data, expire_date} = await store.get(sessionId);
 
         // session不存在，

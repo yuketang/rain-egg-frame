@@ -172,7 +172,7 @@ module.exports = appInfo => {
       // 在此处定义针对所有响应类型的错误处理方法
       // 注意，定义了 config.all 之后，其他错误处理方法不会再生效
       let errcode = 500000;
-      ctx.body = {errcode, errmsg: ctx.__(errcode), stack: ctx.app.env !== 'prod' ? err.stack : undefined};   // 非正式环境返回 stack 信息
+      ctx.body = {errcode, errmsg: ctx.__(errcode), stack: appInfo.env !== 'prod' ? err.stack : undefined};   // 非正式环境返回 stack 信息
       ctx.status = 500;
     },
   }
