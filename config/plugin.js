@@ -40,4 +40,9 @@ exports.ri18n= {
   enable: true,
   path: path.join(__dirname,'../lib/plugin/egg-ri18n'),
   // package: '',
-}
+};
+
+exports.routerPlus = {
+  enable: true,
+  package: 'egg-router-plus',
+};
