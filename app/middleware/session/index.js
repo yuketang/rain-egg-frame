@@ -44,7 +44,7 @@ class Session {
 
     let {store} = this;
     this.ctx = ctx;
-    let sessionId = ctx.sessionID = ctx.sessionId = this.getSessionid();  //todo: 删除测试数据
+    let sessionId = ctx.sessionID = ctx.sessionId = this.getSessionid();
     debug('sessionId', sessionId)
 
     // self-awareness
