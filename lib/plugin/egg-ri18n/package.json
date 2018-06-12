@@ -39,7 +39,8 @@
     "agent.js",
     "app",
     "config",
-    "lib"
+    "lib",
+    "package.json"
   ],
   "ci": {
     "version": "8, 9"
