@@ -44,7 +44,7 @@ class Session {
 
     let {store} = this;
     this.ctx = ctx;
-    let sessionId = ctx.sessionID = ctx.sessionId = this.getSessionid() || '00dlp7fbi9at4w3p5dmbjn3ieene10lp';  //todo: 删除测试数据
+    let sessionId = ctx.sessionID = ctx.sessionId = this.getSessionid();  //todo: 删除测试数据
     debug('sessionId', sessionId)
 
     // self-awareness
