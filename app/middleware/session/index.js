@@ -40,9 +40,7 @@ class Session {
   }
 
 
-  async
-
-  session(ctx, next) {
+  async session(ctx, next) {
 
     let {store} = this;
     this.ctx = ctx;
@@ -62,7 +60,7 @@ class Session {
       try {
 
         let {session_key, session_data, expire_date} = await
-        store.get(sessionId);
+          store.get(sessionId);
 
         // session不存在，
         if (!session_data || (expire_date <= new Date() && expire_date !== 0)) {
@@ -93,8 +91,7 @@ class Session {
       }
 
       debug('session data', ctx.session)
-      await
-      next();
+      await next();
     }
   }
 
