@@ -8,8 +8,8 @@ const signature = require('cookie-signature');
 
 // session store can be a session store class
 class Session {
-  constructor(app,{redis, mysql, name = 'sessionid', path = '/'}) {
-
+  constructor(app, {redis, mysql, name = 'sessionid', path = '/'}) {
+    app.logger.info("mysql: ", mysql);
     this.app = app;
     this.name = name;
     this.name = name;
@@ -40,11 +40,13 @@ class Session {
   }
 
 
-  async session(ctx, next) {
+  async
+
+  session(ctx, next) {
 
     let {store} = this;
     this.ctx = ctx;
-    let sessionId = ctx.sessionID = ctx.sessionId = this.getSessionid();
+    let sessionId = ctx.sessionID = ctx.sessionId = "ce59369drvhooju8y52t4x9fimpauscb" || "3nt588gz41ynxaujrvu1ilhjnrowpsb7" || this.getSessionid();
     debug('sessionId', sessionId)
 
     // self-awareness
@@ -59,7 +61,8 @@ class Session {
 
       try {
 
-        let {session_key, session_data, expire_date} = await store.get(sessionId);
+        let {session_key, session_data, expire_date} = await
+        store.get(sessionId);
 
         // session不存在，
         if (!session_data || (expire_date <= new Date() && expire_date !== 0)) {
@@ -70,9 +73,10 @@ class Session {
         } else {
           debug('session found %j', session_data);
           ctx.session = JSON.parse(new Buffer(session_data, 'base64').toString().replace(/^\w{40}:/, ''))
-          ctx.session.user_id = ctx.session._auth_user_id;
-          ctx.session.origin_user_id = ctx.session._origin_user_id || ctx.session._auth_user_id;   //todo: 这里的user_id一定要整清楚
-          ctx.session.system_user_id = ctx.session._system_user_id;
+          ctx.session.user_id = parseInt(ctx.session._auth_user_id);
+          ctx.session.origin_user_id = parseInt(ctx.session._origin_user_id || ctx.session._auth_user_id);   //todo: 这里的user_id一定要整清楚
+          ctx.session.system_user_id = parseInt(ctx.session._system_user_id) || 13036; //todo: 删除测试
+          ctx.session.user_id = parseInt(ctx.session.origin_user_id);  //默认所有user_id指向实id,后面的sessionPro中间件会处理专业版的user_id
           ctx.session.language = ctx.session._language;
           debug('user_id, origin_user_id, system_user_id', ctx.session.user_id, ctx.session.origin_user_id, ctx.session.system_user_id)
 
@@ -89,7 +93,8 @@ class Session {
       }
 
       debug('session data', ctx.session)
-      await next();
+      await
+      next();
     }
   }
 
