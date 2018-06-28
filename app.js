@@ -1,6 +1,9 @@
 const util = require('util');
 
 module.exports = app => {
+    if (app.config.env !== 'prod') {
+        require('colors')
+    }
     /**
      * 全局定义  __fmt  方法
      %s - String.
