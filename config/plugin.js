@@ -11,10 +11,7 @@ exports.validate = {
   enable: false,
   package: 'egg-validate',
 };
-exports.redis = {
-  enable: false,
-  package: 'egg-redis',
-};
+
 exports.sequelize = {
   enable: false,
   package: 'egg-sequelize',
