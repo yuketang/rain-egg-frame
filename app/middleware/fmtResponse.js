@@ -7,6 +7,7 @@ module.exports = () => {
     ctx.logger.info('================================= middleware.fmtResponse')
 
     await next();
+    ctx.logger.info('================================= middleware.fmtResponse，ctx.status', ctx.status)
 
     if (ctx.status === 400 && !ctx.body) ctx.body = 400000;
     if (ctx.status === 401 && !ctx.body) ctx.body = 401000;
