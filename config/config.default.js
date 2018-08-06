@@ -178,6 +178,8 @@ module.exports = appInfo => {
         ctx.body = {errcode, errmsg: ctx.__(errcode)};
       }
       ctx.status = 500;
+
+      global.Raven && Raven.captureException(err);
     },
   }
   return config;
