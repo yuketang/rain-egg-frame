@@ -179,6 +179,8 @@ module.exports = appInfo => {
       }
       ctx.status = 500;
 
+      err.request = ctx.request
+      err.user_id = ctx.session.user_id
       global.Raven && Raven.captureException(err);
     },
   }
