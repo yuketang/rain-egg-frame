@@ -4,8 +4,6 @@ const uuid = require('uuid');
 
 module.exports = options => {
     return async function access_log(ctx, next) {
-      ctx.logger.info('================================= middleware.access_log')
-
       const start = Date.now();
         ctx.traceId = uuid.v1();
         await next();
@@ -33,7 +31,6 @@ module.exports = options => {
             const message = util.format('[access] %s %s %s %s %s %sms %sbytes %s %s %s %s %s %s',
                 ip, method, protocol, status, url, rs, length, body, response, referrer, serverTime, ua);
             // ctx.accessLogger.info(message);
-          ctx.logger.info('================================= middleware.access_log', message)
         }
     };
 };
