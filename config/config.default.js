@@ -165,24 +165,42 @@ module.exports = appInfo => {
   };
 
 
+  const level = (process.env.NODE_ENV === 'production' || process.env.EGG_SERVER_ENV === 'prod') ? 'INFO' : 'DEBUG';
+
+  config.customLogger = {
+    accessLogger: {
+      level: level,
+      consoleLevel: level,
+      file: path.join(appInfo.baseDir || '', 'logs/accessLogger.log'),
+    }
+  };
   config.onerror = {
     json(err, ctx) {
       // 未捕获的异常
 
-      // 在此处定义针对所有响应类型的错误处理方法
-      // 注意，定义了 config.all 之后，其他错误处理方法不会再生效
-      let errcode = 500000;
-      if(appInfo.env !== 'prod') {
-        ctx.body = {errcode, errmsg: ctx.__(errcode), stack: err.stack , path: ctx.path};// 非正式环境返回 stack 信息
-      } else{
-        ctx.body = {errcode, errmsg: ctx.__(errcode)};
-      }
-      ctx.status = 500;
+      if(ctx.status === 422) {
+        ctx.body = {errcode: 400001, errmsg: ctx.__(400001) +': ' + JSON.stringify(err.errors)};// 非正式环境返回 stack 信息
+      }else{
 
-      err.request = ctx.request
-      err.user_id = ctx.session.user_id
-      global.Raven && Raven.captureException(err);
+        // 在此处定义针对所有响应类型的错误处理方法
+        // 注意，定义了 config.all 之后，其他错误处理方法不会再生效
+        let errcode = 500000;
+        if(appInfo.env !== 'prod') {
+          ctx.body = {errcode, errmsg: ctx.__(errcode), stack: err.stack , path: ctx.path};// 非正式环境返回 stack 信息
+        } else{
+          ctx.body = {errcode, errmsg: ctx.__(errcode)};
+        }
+
+        ctx.status = 500;
+
+        err.request = ctx.request
+        if(ctx.session) err.user_id = ctx.session.user_id
+        global.Raven && Raven.captureException(err);
+      }
     },
-  }
+  };
+
+
+  config.httpclientHandleRes  = true;
   return config;
 };

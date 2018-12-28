@@ -21,6 +21,7 @@ module.exports = options => {
             const response = JSON.stringify(ctx.body);
             const query = JSON.stringify(ctx.request.query);
             const body = JSON.stringify(ctx.request.body);
+            const request = JSON.stringify(Object.assign({}, query, body));
             const method = ctx.method;
             const url = ctx.url;
             const status = ctx.status;
@@ -28,9 +29,9 @@ module.exports = options => {
             const referrer = ctx.get('referrer') || '-';
             const ua = ctx.get('user-agent') || '-';
             const serverTime = ctx.response.get('X-Server-Response-Time') || '-';
-            const message = util.format('[access] %s %s %s %s %s %sms %sbytes %s %s %s %s %s %s',
-                ip, method, protocol, status, url, rs, length, body, response, referrer, serverTime, ua);
-            // ctx.accessLogger.info(message);
+            const message = util.format('[access] %s %s %s %s %s %sms %sbytes %s %s %s %s %s',
+                ip, method, protocol, status, url, rs, length, request, response, referrer, serverTime, ua);
+            ctx.accessLogger.info(message);
         }
     };
 };

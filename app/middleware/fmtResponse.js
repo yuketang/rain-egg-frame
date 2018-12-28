@@ -6,6 +6,8 @@ module.exports = () => {
   return async function fmt_res(ctx, next) {
     await next();
 
+    if (ctx.status === 302) return;
+
     if (ctx.status === 400 && !ctx.body) ctx.body = 400000;
     if (ctx.status === 401 && !ctx.body) ctx.body = 401000;
     if (ctx.status === 404 && !ctx.body) ctx.body = 404000;
