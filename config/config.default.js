@@ -195,7 +195,7 @@ module.exports = appInfo => {
 
         err.request = ctx.request
         if(ctx.session) err.user_id = ctx.session.user_id
-        global.Raven && Raven.captureException(err);
+        global.Sentry && Sentry.captureException(err);
       }
     },
   };
