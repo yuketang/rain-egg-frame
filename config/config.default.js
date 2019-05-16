@@ -17,7 +17,6 @@ const path = require('path');
  *
  */
 module.exports = appInfo => {
-
   const config = {
     tracelog: {
       Tracer: require('../lib/Tracer.js'),
@@ -27,6 +26,7 @@ module.exports = appInfo => {
     },
 
     maxAge: 86400000, // Session 的最大有效时间
+
     bodyParser: {
       jsonLimit: '10mb', // default: 100kb
       formLimit: '10mb', // default: 100kb
@@ -139,33 +139,40 @@ module.exports = appInfo => {
 
   const level = (process.env.NODE_ENV === 'production' || process.env.EGG_SERVER_ENV === 'prod') ? 'INFO' : 'DEBUG';
 
+  config.customLogger = {
+    accessLogger: {
+      level: level,
+      consoleLevel: level,
+      file: path.join(appInfo.baseDir || '', 'logs/accessLogger.log'),
+    }
+  };
   config.onerror = {
     json(err, ctx) {
       // 未捕获的异常
 
-      if (ctx.status === 422) {
-        ctx.body = {errcode: 400001, errmsg: ctx.__(400001) + ': ' + JSON.stringify(err.errors)};// 非正式环境返回 stack 信息
-      } else {
+      if(ctx.status === 422) {
+        ctx.body = {errcode: 400001, errmsg: ctx.__(400001) +': ' + JSON.stringify(err.errors)};// 非正式环境返回 stack 信息
+      }else{
 
         // 在此处定义针对所有响应类型的错误处理方法
         // 注意，定义了 config.all 之后，其他错误处理方法不会再生效
         let errcode = 500000;
-        if (appInfo.env !== 'prod') {
-          ctx.body = {errcode, errmsg: ctx.__(errcode), stack: err.stack, path: ctx.path};// 非正式环境返回 stack 信息
-        } else {
+        if(appInfo.env !== 'prod') {
+          ctx.body = {errcode, errmsg: ctx.__(errcode), stack: err.stack , path: ctx.path};// 非正式环境返回 stack 信息
+        } else{
           ctx.body = {errcode, errmsg: ctx.__(errcode)};
         }
 
         ctx.status = 500;
 
         err.request = ctx.request
-        if (ctx.session) err.user_id = ctx.session.user_id
-        global.Raven && Raven.captureException(err);
+        if(ctx.session) err.user_id = ctx.session.user_id
+        global.Sentry && Sentry.captureException(err);
       }
     },
   };
 
 
-  config.httpclientHandleRes = true;
+  config.httpclientHandleRes  = true;
   return config;
 };
