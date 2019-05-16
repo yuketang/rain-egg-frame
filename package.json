@@ -7,7 +7,7 @@
     "cookie": "^0.3.1",
     "cookie-signature": "^1.1.0",
     "debug": "^3.1.0",
-    "egg": "^2.9.0",
+    "egg": "^2.22.2",
     "egg-mysql": "^3.0.0",
     "egg-redis": "^2.0.0",
     "egg-router-plus": "^1.2.1",
@@ -46,12 +46,7 @@
     "autod": "autod",
     "pkgfiles": "egg-bin pkgfiles",
     "debug": "egg-bin debug",
-    "dev": "egg-bin dev",
-    "migrate:down": "egg-sequelize db:migrate:undo",
-    "migrate:new": "egg-sequelize migration:create",
-    "migrate:up": "egg-sequelize db:migrate",
-    "start": "egg-scripts start --daemon --title=egg-server-rain-web-egg",
-    "stop": "egg-scripts stop --title=egg-server-rain-web-egg"
+    "dev": "egg-bin dev"
   },
   "ci": {
     "version": "8, 9"

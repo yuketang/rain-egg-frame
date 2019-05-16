@@ -17,6 +17,7 @@ const path = require('path');
  *
  */
 module.exports = appInfo => {
+
   const config = {
     tracelog: {
       Tracer: require('../lib/Tracer.js'),
@@ -24,44 +25,15 @@ module.exports = appInfo => {
     tracer: {
       Class: require('../lib/Tracer.js'),
     },
-    // static: {
-    //     prefix: '',
-    //     dir: path.join(appInfo.baseDir, 'app/public'),
-    //     dynamic: true,
-    //     preload: false,
-    //     maxAge: 31536000,
-    //     buffer: false,
-    // },
-    // coreMiddleware: [
-    //   'first',
-    //   'meta',
-    //   'siteFile',
-    //   'fmtResponse',
-    //   'accessLog',
-    //   'error404',
-    //   'bodyParser',
-    //   'overrideMethod',
-    // ],
-    // siteFile: {
-    //     '/favicon.ico': fs.readFileSync(path.join(__dirname, 'favicon.ico')),
-    // },
+
     maxAge: 86400000, // Session 的最大有效时间
-
-    // customLogger: {
-    //     accessLogger: {
-    //         file: path.join(appInfo.baseDir, `logs/${appInfo.name}-access.log`),
-    //     },
-    // },
-
-
-    // logrotator: { // 切割日志，默认按天
-    //     filesRotateByHour: [ 'app', 'core', 'agent', 'error' ].map(item => path.join(appInfo.baseDir, 'logs', `${appInfo.name}-${item}.log`)), // 按小时切割日志
-    // },
     bodyParser: {
       jsonLimit: '10mb', // default: 100kb
       formLimit: '10mb', // default: 100kb
     },
-
+    meta: {
+      logging: false
+    },
     multipart: {
       fileExtensions: ['.apk'], // 增加对 .apk 扩展名的支持
       whitelist: ['.png'], // 覆盖整个白名单，只允许上传 '.png' 格式; 当传递了 whitelist 属性时，fileExtensions 属性不生效。
@@ -167,40 +139,33 @@ module.exports = appInfo => {
 
   const level = (process.env.NODE_ENV === 'production' || process.env.EGG_SERVER_ENV === 'prod') ? 'INFO' : 'DEBUG';
 
-  config.customLogger = {
-    accessLogger: {
-      level: level,
-      consoleLevel: level,
-      file: path.join(appInfo.baseDir || '', 'logs/accessLogger.log'),
-    }
-  };
   config.onerror = {
     json(err, ctx) {
       // 未捕获的异常
 
-      if(ctx.status === 422) {
-        ctx.body = {errcode: 400001, errmsg: ctx.__(400001) +': ' + JSON.stringify(err.errors)};// 非正式环境返回 stack 信息
-      }else{
+      if (ctx.status === 422) {
+        ctx.body = {errcode: 400001, errmsg: ctx.__(400001) + ': ' + JSON.stringify(err.errors)};// 非正式环境返回 stack 信息
+      } else {
 
         // 在此处定义针对所有响应类型的错误处理方法
         // 注意，定义了 config.all 之后，其他错误处理方法不会再生效
         let errcode = 500000;
-        if(appInfo.env !== 'prod') {
-          ctx.body = {errcode, errmsg: ctx.__(errcode), stack: err.stack , path: ctx.path};// 非正式环境返回 stack 信息
-        } else{
+        if (appInfo.env !== 'prod') {
+          ctx.body = {errcode, errmsg: ctx.__(errcode), stack: err.stack, path: ctx.path};// 非正式环境返回 stack 信息
+        } else {
           ctx.body = {errcode, errmsg: ctx.__(errcode)};
         }
 
         ctx.status = 500;
 
         err.request = ctx.request
-        if(ctx.session) err.user_id = ctx.session.user_id
+        if (ctx.session) err.user_id = ctx.session.user_id
         global.Raven && Raven.captureException(err);
       }
     },
   };
 
 
-  config.httpclientHandleRes  = true;
+  config.httpclientHandleRes = true;
   return config;
 };
