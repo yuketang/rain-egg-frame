@@ -136,16 +136,6 @@ module.exports = appInfo => {
     // }
   };
 
-
-  const level = (process.env.NODE_ENV === 'production' || process.env.EGG_SERVER_ENV === 'prod') ? 'INFO' : 'DEBUG';
-
-  config.customLogger = {
-    accessLogger: {
-      level: level,
-      consoleLevel: level,
-      file: path.join(appInfo.baseDir || '', 'logs/accessLogger.log'),
-    }
-  };
   config.onerror = {
     json(err, ctx) {
       // 未捕获的异常
